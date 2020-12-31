@@ -1,0 +1,36 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+
+name                mtkbabel
+version             0.8.4
+categories          gis
+maintainers         {@mholling gmail.com:mdholling} openmaintainer
+description         program to operate the i-Blue 747 GPS data logger
+long_description    program to operate the i-Blue 747 GPS data logger
+homepage            https://www.rigacci.org/wiki/doku.php/doc/appunti/hardware/gps_logger_i_blue_747
+platforms           darwin
+license             GPL-2
+
+master_sites        sourceforge
+
+checksums           rmd160  ab69cdacca223174bcd9fd2e71d5669ac7c8b61d \
+                    sha256  6f16671d47fec8798e025fec2829a2f0b2eec6af6654cbeee71ae9259346eaf2 \
+                    size    29296
+
+depends_run         port:perl5 \
+                    port:p5-timedate \
+                    port:p5-device-serialport
+
+patch {
+    reinplace "s|/usr/bin/perl|${prefix}/bin/perl|" ${worksrcpath}/mtkbabel
+}
+
+use_configure       no
+
+build {}
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/mtkbabel   ${destroot}${prefix}/bin/
+    xinstall -m 644 ${worksrcpath}/mtkbabel.1 ${destroot}${prefix}/share/man/man1/
+}
